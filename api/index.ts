@@ -64,6 +64,10 @@ passport.deserializeUser((user: Express.User, done) => {
   done(null, user);
 });
 
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'Hello World!' });
+});
+
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
   // Successful authentication, redirect or handle the user as desired
@@ -75,17 +79,6 @@ app.post('/google-home/intent', async (req, res) => {
   let { user } = req;
 
   const googleHomeService = new GoogleHomeService(firebase);
-
-  if (!user) {
-    user = {
-      id: 1,
-      name: 'Bruno Sartori',
-      login: 'brunosartori.dev@gmail.com',
-      password: '$2a$10$MmHGsvxXz16IfxgvVVZUQew1fM2LlDCBzCXex/mzIPFIYFKzvVodi',
-      createdAt: '2024-10-09T15:15:57.000Z',
-      updatedAt: '2024-10-09T15:15:57.000Z'
-    };
-  }
 
   try {
     switch(payload.inputs[0].intent) {
