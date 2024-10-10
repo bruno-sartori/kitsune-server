@@ -4,11 +4,11 @@ import session from 'express-session';
 import passport from 'passport';
 import cors from 'cors';
 import morgan from 'morgan';
-import authConfig from '@config/auth';
+import authConfig from './config/auth';
 import firebase from './database/connection';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import GoogleHomeService from '@services/google-home.service';
+import GoogleHomeService from './services/google-home.service';
 
 // Initialize express app
 const app = express();

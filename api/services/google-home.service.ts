@@ -1,4 +1,4 @@
-import { ExecuteIntent, QueryIntent, SyncIntent } from "@interfaces/google-intents";
+import { ExecuteIntent, QueryIntent, SyncIntent } from "../interfaces/google-intents";
 import DeviceService from "./device.service";
 import { collection, doc, setDoc, Firestore, onSnapshot } from "firebase/firestore";
 
