@@ -1,7 +1,7 @@
 {
   "name": "kitsune",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "api/index.js",
   "author": "Bruno Sartori <brunosartori.dev@gmail.com>",
   "description": "An API for handling my (not smart) devices on Google Home",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "dotenvx run -- nodemon",
     "build": "tsc",
-    "serve": "node dist/index.js"
+    "serve": "node api/index.js"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
@@ -47,14 +47,14 @@
     "uuid": "^10.0.0"
   },
   "_moduleAliases": {
-    "@interfaces": "dist/interfaces",
-    "@config": "dist/config",
-    "@utils": "dist/utils",
-    "@errors": "dist/errors",
-    "@controllers": "dist/controllers",
-    "@middlewares": "dist/middlewares",
-    "@models": "dist/database/models",
-    "@routes": "dist/routes",
-    "@services": "dist/services"
+    "@interfaces": "api/interfaces",
+    "@config": "api/config",
+    "@utils": "api/utils",
+    "@errors": "api/errors",
+    "@controllers": "api/controllers",
+    "@middlewares": "api/middlewares",
+    "@models": "api/database/models",
+    "@routes": "api/routes",
+    "@services": "api/services"
   }
 }

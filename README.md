@@ -54,7 +54,7 @@ To compile the project into JavaScript (production build):
 yarn build
 ```
 
-The compiled files will be located in the `dist/` folder.
+The compiled files will be located in the `api/` folder.
 
 ### 3. Serve Production Build
 
@@ -74,7 +74,7 @@ yarn serve
 │   ├── models/       # Data models (if using a database)
 │   ├── utils/        # Utility functions
 │   └── index.ts      # Application entry point
-├── dist/             # Compiled production code
+├── api/             # Compiled production code
 ├── package.json      # Project dependencies and scripts
 ├── tsconfig.json     # TypeScript configuration
 └── README.md         # Project documentation
@@ -82,7 +82,7 @@ yarn serve
 
 ## License
 
-All rights reserved. This project and its content may not be used, copied, modified, or distributed without prior permission from the owner.
+All rights reserved. This project and its content may not be used, copied, modified, or apiributed without prior permission from the owner.
 
 
 

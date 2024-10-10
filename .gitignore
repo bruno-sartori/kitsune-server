@@ -1,4 +1,4 @@
-dist/
+api/
 node_modules/
 uploads/
 
@@ -9,7 +9,7 @@ npm-debug.log*cargo.log
 cross.log
 
 /node_modules/
-/dist/
+/api/
 /test/
 custom-elements.json
 /lib/target
