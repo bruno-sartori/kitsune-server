@@ -1,0 +1,60 @@
+{
+  "name": "kitsune",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "author": "Bruno Sartori <brunosartori.dev@gmail.com>",
+  "description": "An API for handling my (not smart) devices on Google Home",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "dotenvx run -- nodemon",
+    "build": "tsc",
+    "serve": "node dist/index.js"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/multer": "^1.4.12",
+    "module-alias": "^2.2.3",
+    "nodemon": "^3.1.5",
+    "sequelize-cli": "^6.6.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
+  },
+  "dependencies": {
+    "@dotenvx/dotenvx": "^1.14.1",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/express-session": "^1.18.0",
+    "@types/morgan": "^1.9.9",
+    "@types/passport": "^1.0.16",
+    "@types/passport-google-oauth20": "^2.0.16",
+    "@types/uuid": "^10.0.0",
+    "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "cross": "^1.0.0",
+    "express": "^4.21.0",
+    "express-session": "^1.18.1",
+    "firebase": "^10.14.1",
+    "http-status": "^1.7.4",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.11.3",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "sequelize": "^6.37.3",
+    "uuid": "^10.0.0"
+  },
+  "_moduleAliases": {
+    "@interfaces": "dist/interfaces",
+    "@config": "dist/config",
+    "@utils": "dist/utils",
+    "@errors": "dist/errors",
+    "@controllers": "dist/controllers",
+    "@middlewares": "dist/middlewares",
+    "@models": "dist/database/models",
+    "@routes": "dist/routes",
+    "@services": "dist/services"
+  }
+}
