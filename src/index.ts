@@ -64,8 +64,8 @@ passport.deserializeUser((user: Express.User, done) => {
   done(null, user);
 });
 
-app.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-app.get('/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
   // Successful authentication, redirect or handle the user as desired
   res.redirect('/');
 });
