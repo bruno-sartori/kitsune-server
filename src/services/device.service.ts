@@ -2,12 +2,12 @@ import { getDocs, collection, Firestore, documentId } from 'firebase/firestore';
 import { query, where } from 'firebase/firestore';
 
 class DeviceService {
-  private db: Firestore | null = null;
+  public db: Firestore | null = null;
 
-  public setDb(db: Firestore) {
+  constructor(db: Firestore) {
     this.db = db;
   }
-
+  
   public async getAvailableDevices(userId: number) {
     const devices: any[] = [];
 

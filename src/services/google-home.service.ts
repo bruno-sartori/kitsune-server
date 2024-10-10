@@ -3,16 +3,12 @@ import DeviceService from "./device.service";
 import { collection, doc, setDoc, Firestore, onSnapshot } from "firebase/firestore";
 
 class GoogleHomeService {
-  private db: Firestore | null = null;
-  private deviceService: DeviceService;
+  public db: Firestore | null = null;
+  public deviceService: DeviceService;
 
-  constructor() {
-    this.deviceService = new DeviceService();
-  }
-
-  public setDb(db: Firestore) {
+  constructor(db: Firestore) {
     this.db = db;
-    this.deviceService.setDb(db);
+    this.deviceService = new DeviceService(db);
   }
 
   public async syncDevices(payload: SyncIntent, userId: number) {
