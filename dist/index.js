@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 require("module-alias/register");
 const express_1 = __importDefault(require("express"));
+const util_1 = __importDefault(require("util"));
 const express_session_1 = __importDefault(require("express-session"));
 const passport_1 = __importDefault(require("passport"));
 const cors_1 = __importDefault(require("cors"));
@@ -74,14 +75,18 @@ passport_1.default.serializeUser((user, done) => {
 });
 passport_1.default.deserializeUser((id, done) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    console.log('DESERIUALIZE');
+    console.log('DESERIUALIZE', id);
     try {
-        const q = (0, firestore_1.query)((0, firestore_1.collection)(connection_1.default, 'users'), (0, firestore_1.where)('id', '==', id));
+        const q = (0, firestore_1.query)((0, firestore_1.collection)(connection_1.default, 'users'), (0, firestore_1.where)((0, firestore_1.documentId)(), '==', id));
+        console.log('AQAQUI', q);
         const querySnapshot = yield (0, firestore_1.getDocs)(q);
+        console.log('AQUI');
         const user = (_a = querySnapshot.docs[0]) === null || _a === void 0 ? void 0 : _a.data();
+        console.log('AQUI user', user);
         done(null, user);
     }
     catch (error) {
+        console.error(error);
         done(error, null);
     }
 }));
@@ -89,15 +94,36 @@ app.get('/', (req, res) => {
     console.log(req.headers);
     res.status(200).json({ message: 'Hello World!' });
 });
+app.get('/login', (req, res) => {
+    res.send(`<html>
+<body>
+<form action="/login" method="post">
+<input type="hidden" name="response_url" value="${req.query.response_url}" />
+<button type="submit" style="font-size:14pt">Link this service to Google</button>
+</form>
+</body>
+</html>
+`);
+});
+app.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // Here, you should validate the user account.
+    // In this sample, we do not do that.
+    const responseUrl = decodeURIComponent(req.body.response_url);
+    return res.redirect(responseUrl);
+}));
 app.get('/auth/google', passport_1.default.authenticate('google', { scope: ['profile', 'email'] }));
 app.get('/auth/google/callback', passport_1.default.authenticate('google' /*, { failureRedirect: '/' }*/), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('CALLBACK');
+    console.log(req.body, req.query);
     const userEmail = req.user.email;
     // Gerar o authorizationCode e salvar no Firestore
     try {
         const authorizationCode = yield generateAuthorizationCode(userEmail);
         console.log('Authorization code:', authorizationCode);
-        res.json({ authorizationCode });
+        const responseUrl = util_1.default.format('%s?code=%s&state=%s', decodeURIComponent(req.query.redirect_uri), authorizationCode, req.query.state);
+        const redirectUrl = `/login?response_url=${encodeURIComponent(responseUrl)}`;
+        console.log('redirect:', redirectUrl);
+        return res.redirect(redirectUrl);
     }
     catch (error) {
         console.error('Error generating authorization code:', error);

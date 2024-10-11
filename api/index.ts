@@ -1,5 +1,6 @@
 import 'module-alias/register';
 import express from 'express';
+import util from 'util';
 import session from 'express-session';
 import passport from 'passport';
 import cors from 'cors';
@@ -9,7 +10,7 @@ import morgan from 'morgan';
 import authConfig from './config/auth';
 import firebase from './database/connection';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { collection, documentId, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import GoogleHomeService from './services/google-home.service';
 import authMiddleware from './middlewares/auth';
 
@@ -75,13 +76,17 @@ passport.serializeUser((user: Express.User, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-  console.log('DESERIUALIZE')
+  console.log('DESERIUALIZE', id)
   try {
-    const q = query(collection(firebase, 'users'), where('id', '==', id));
+    const q = query(collection(firebase, 'users'), where(documentId(), '==', id));
+    console.log('AQAQUI', q);
     const querySnapshot = await getDocs(q);
+    console.log('AQUI')
     const user = querySnapshot.docs[0]?.data();
+    console.log('AQUI user', user)
     done(null, user);
   } catch (error) {
+    console.error(error);
     done(error, null);
   }
 });
@@ -91,16 +96,45 @@ app.get('/', (req, res) => {
   res.status(200).json({ message: 'Hello World!' });
 });
 
+app.get('/login', (req, res) => {
+  res.send(`<html>
+<body>
+<form action="/login" method="post">
+<input type="hidden" name="response_url" value="${req.query.response_url}" />
+<button type="submit" style="font-size:14pt">Link this service to Google</button>
+</form>
+</body>
+</html>
+`);
+});
+
+app.post('/login', async (req, res) => {
+  // Here, you should validate the user account.
+  // In this sample, we do not do that.
+  const responseUrl = decodeURIComponent(req.body.response_url as string);
+  return res.redirect(responseUrl);
+});
+
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 app.get('/auth/google/callback', passport.authenticate('google'/*, { failureRedirect: '/' }*/), async (req, res) => {
   console.log('CALLBACK')
+  console.log(req.body, req.query)
   const userEmail = req.user.email;
 
   // Gerar o authorizationCode e salvar no Firestore
   try {
     const authorizationCode = await generateAuthorizationCode(userEmail);
     console.log('Authorization code:', authorizationCode);
-    res.json({ authorizationCode });
+    
+    const responseUrl = util.format(
+      '%s?code=%s&state=%s',
+      decodeURIComponent(req.query.redirect_uri as string),
+      authorizationCode,
+      req.query.state
+    );
+    const redirectUrl = `/login?response_url=${encodeURIComponent(responseUrl)}`;
+    console.log('redirect:', redirectUrl);
+    return res.redirect(redirectUrl);
   } catch (error) {
     console.error('Error generating authorization code:', error);
     res.status(500).json({ error: 'Error generating authorization code' });
@@ -173,7 +207,7 @@ app.post('/auth/token', async (req, res) => {
       }
 
       const userData = user.data();
-      
+
       const accessToken = jwt.sign({ userId: userData.userId, email: userData.email }, authConfig.secret, {
         expiresIn: authConfig.expiresIn
       });

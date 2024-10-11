@@ -202,3 +202,5 @@ https://dev.to/davidnadejdin/build-your-for-google-home-2b2a
 https://console.cloud.google.com/apis/credentials?authuser=2&project=pcsmart
 https://codeculturepro.medium.com/implementing-authentication-in-nodejs-app-using-oauth2-0-59fee8f63798
 https://dev.to/davidnadejdin/build-your-for-google-home-2b2a
+
+https://github.com/google-home/smart-home-nodejs/blob/master/src/auth-provider.ts
