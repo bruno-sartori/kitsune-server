@@ -111,7 +111,7 @@ app.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const responseUrl = decodeURIComponent(req.body.response_url);
     return res.redirect(responseUrl);
 }));
-app.get('/auth/google', passport_1.default.authenticate('google', { scope: ['profile', 'email'] }));
+app.get('/auth/google', (req, res, next) => { console.log('AUITH', req.body, req.query); next(); }, passport_1.default.authenticate('google', { scope: ['profile', 'email'] }));
 app.get('/auth/google/callback', passport_1.default.authenticate('google' /*, { failureRedirect: '/' }*/), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('CALLBACK');
     console.log(req.body, req.query);

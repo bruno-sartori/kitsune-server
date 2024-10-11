@@ -115,7 +115,7 @@ app.post('/login', async (req, res) => {
   return res.redirect(responseUrl);
 });
 
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get('/auth/google', (req, res, next) => { console.log('AUITH', req.body, req.query); next(); }, passport.authenticate('google', { scope: ['profile', 'email'] }));
 app.get('/auth/google/callback', passport.authenticate('google'/*, { failureRedirect: '/' }*/), async (req, res) => {
   console.log('CALLBACK')
   console.log(req.body, req.query)
@@ -128,7 +128,7 @@ app.get('/auth/google/callback', passport.authenticate('google'/*, { failureRedi
     
     const responseUrl = util.format(
       '%s?code=%s&state=%s',
-      decodeURIComponent(req.query.redirect_uri as string),
+      decodeURIComponent(req.query.redirect_uri as string || 'https://oauth-redirect.googleusercontent.com/r/pcsmart'),
       authorizationCode,
       req.query.state
     );
